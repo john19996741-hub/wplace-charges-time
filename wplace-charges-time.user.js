@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         max charges time
 // @namespace    https://github.com/mechanikate/wplace-charges-time
-// @version      1.2.0
+// @version      1.0.0
 // @description  adds a timer counting down to when you will have max charges above the Paint button for wplace
 // @license      MIT
 // @author       mechanikate
