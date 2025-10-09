@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         max charges time
 // @namespace    https://github.com/mechanikate/wplace-charges-time
-// @version      1.2.0
+// @version      1.2.1
 // @description  adds a timer counting down to when you will have max charges above the Paint button for wplace
 // @license      MIT
 // @author       mechanikate
@@ -20,19 +20,15 @@
 
 // be warned, this code is really, really bad. whatever!
 let charges = 0;
-let maxCharges = 0;
+let maxCharges = 35;
 let chargesFullColoring = GM_getValue("color", true); // default coloring to true
 let showMax = GM_getValue("showmax", false); // don't show time until max charges by default
 let coloringId, maxId;
 let updateQueued = false; // stopper to make sure we don't run like 20 charge data fetch requests at once
 const replaceNaN = (val, replacement) => isNaN(val) || val == null || val == undefined ? replacement : val;
 const valueMissing = (val, isNodeList=false) => typeof(val) == "undefined" || val == null || (isNodeList && val.length == 0);
-const determineColor = (percentDone) => {
-    if(percentDone < 75) return "lime";
-    if(percentDone < 85) return "yellow";
-    if(percentDone < 100) return "orange";
-    return "red";
-};
+const rgbToHex = (r,g,b) => "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1); // from https://stackoverflow.com/a/5624139
+const determineColor = fractionDone => rgbToHex(255*(1-fractionDone), 255*fractionDone, 0);
 function updateToggles() {
     if(coloringId) GM_unregisterMenuCommand(coloringId);
     if(maxId) GM_unregisterMenuCommand(maxId);
